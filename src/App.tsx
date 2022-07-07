@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 import { LanguageSelector } from "./components/LanguageSelector";
 import "./App.css";
@@ -16,10 +16,6 @@ function App() {
     });
 
     let timer: NodeJS.Timeout;
-
-    useEffect(() => {
-        return () => clearTimeout(timer);
-    }, []);
 
     function handleChange(event: ChangeEvent<HTMLInputElement>) {
         const val = event.target.value;
@@ -51,8 +47,8 @@ function App() {
                 <input
                     value={text}
                     onChange={handleChange}
-                // onFocus={() => setOpen(true)}
-                // onBlur={() => setOpen(false)}
+                    onFocus={() => setOpen(true)}
+                    onBlur={() => setOpen(false)}
                 />
                 <p>Text: {text}</p>
                 <p onClick={() => setConverted("")}>Converted: {converted}</p>

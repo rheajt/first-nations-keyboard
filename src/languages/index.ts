@@ -10,7 +10,9 @@ export interface Languages {
     ojibwe: Language;
 }
 
-export default {
+const languages: Languages = {
     ojiCree,
     ojibwe,
-} as Languages;
+};
+
+export default languages;
