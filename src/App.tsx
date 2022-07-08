@@ -48,7 +48,7 @@ function App() {
                     value={text}
                     onChange={handleChange}
                     onFocus={() => setOpen(true)}
-                    onBlur={() => setOpen(false)}
+                    onBlur={() => setOpen(true)}
                 />
                 <p>Text: {text}</p>
                 <p onClick={() => setConverted("")}>Converted: {converted}</p>
