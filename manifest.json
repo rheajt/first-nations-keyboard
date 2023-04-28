@@ -1,0 +1,26 @@
+{
+    "manifest_version": 3,
+    "name": "First Nations Keyboard",
+    "version": "1.0.0",
+    "icons": {
+        "16": "images/ChromeKeyboard_Black_16.png",
+        "48": "images/ChromeKeyboard_Black_48.png",
+        "128": "images/ChromeKeyboard_Black_128.png"
+    },
+    "action": {
+        "default_popup": "index.html"
+    },
+    "content_scripts": [
+        {
+            "js": [
+                "src/content.js"
+            ],
+            "matches": [
+                "https://www.google.com/*"
+            ]
+        }
+    ],
+    "permissions": [
+        "storage"
+    ]
+}

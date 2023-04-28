@@ -1,0 +1,25 @@
+#first-nations-sidebar {
+  width: 300px;
+  height: 100%;
+  float: right;
+  background-color: #2c3e50;
+  color: white;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  position: fixed;
+  right: 0;
+  display: none;
+  z-index: 1000;
+}
+#first-nations-sidebar.show {
+  display: block;
+}
+#first-nations-sidebar::-webkit-scrollbar {
+  display: none;
+}
+#first-nations-sidebar header {
+  text-align: center;
+}
+#first-nations-sidebar section p {
+  padding: 0 10px;
+}
