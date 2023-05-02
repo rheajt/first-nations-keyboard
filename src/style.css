@@ -4,7 +4,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  width: 150px;
+  width: 250px;
   padding: 1em;
   display: flex;
   flex-direction: column;
@@ -22,7 +22,36 @@ button {
   color: #fff;
   cursor: pointer;
 }
-
+input {
+  width: 100%;
+  box-sizing: border-box;
+}
 fieldset {
   text-align: left;
+}
+
+button.active {
+  background-color: #fff;
+  color: #2c3e50;
+}
+
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+#language-group {
+  width: 100%;
+}
+#language-options {
+  display: flex;
+  overflow-x: hidden;
+}
+#language-options .language-option {
+  border: 1px solid lightgray;
+  padding: 2px;
+  margin-right: 1px;
+}
+#language-timer {
+  height: 5px;
+  background-color: #2c3e50;
 }

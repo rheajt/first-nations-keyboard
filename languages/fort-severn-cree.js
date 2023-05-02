@@ -120,7 +120,7 @@ export default {
     coo: "\u148E",
     caa: "\u1491",
     c: "\u1428",
-    jwe"\u1493",
+    jwe: "\u1493",
     cwe: "\u1493",
     jwi: "\u1495",
     cwi: "\u1495",
@@ -256,4 +256,4 @@ export default {
     h: "\u1426",
     x: "\u166E",
     X: "\u166D",
-}
+};
