@@ -3,11 +3,32 @@ import languages from "../languages";
 import "./content.css";
 
 const selectedLanguage = "ojibwe";
-// let status = false;
+let status = false;
+let language = "Ojibwe";
+
+chrome.storage.sync.get(["status", "language"], (result) => {
+    console.log("loaded", result);
+    status = result.status;
+    language = result.language;
+});
 
 chrome.storage.onChanged.addListener((changes, namespace) => {
     for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
-        // status = !!newValue;
+        if (key === "language") {
+            document.getElementById("language-name").textContent =
+                languages[newValue].toUpperCase();
+            document.getElementById("language-list").innerHTML = Object.entries(
+                languages[newValue].language
+            )
+                .map(([key, value]) => {
+                    return `
+                    <p>
+                        ${key}: ${value}
+                    </p>
+                `;
+                })
+                .join("");
+        }
         toggleSidebar(!!newValue);
     }
 });
@@ -17,26 +38,30 @@ function toggleSidebar(status) {
         .getElementById("first-nations-sidebar")
         .classList.toggle("show", status);
 }
+
 const html = `
 <div id="first-nations-sidebar">
     <header>
     <img src="${chrome.runtime.getURL(
     src
 )}" alt="first nations keyboard extension" />
-    <h1>First Nations</h1>
+    <h1 id="language-name">${language.toUpperCase()}</h1>
     </header>
 
     <section>
-        <p>${languages[selectedLanguage].description}</p>
-        ${Object.entries(languages[selectedLanguage].language)
+        <p id="language-description">${languages[selectedLanguage].description
+    }</p>
+        <div id="language-list">
+            ${Object.entries(languages[selectedLanguage].language)
         .map(([key, value]) => {
             return `
-                <p>
-                    ${key}: ${value}
-                </p>
-            `;
+                    <p>
+                        ${key}: ${value}
+                    </p>
+                `;
         })
         .join("")}
+        </div>
     </section>
 </div>
 `;
