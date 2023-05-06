@@ -8,15 +8,26 @@ chrome.storage.sync.get(["status", "language"], (result) => {
     load(result);
 });
 
-function buttonClick(e) {
-    console.log("clicked", e.target.id);
-    e.target.textContent = e.target.classList.contains("active")
-        ? "Turn Off"
-        : "Turn On";
-    e.target.classList.toggle("active");
-    chrome.storage.sync.set({
-        status: !e.target.classList.contains("active"),
-    });
+async function getTabId() {
+    let queryOptions = { active: true, lastFocusedWindow: true };
+    let [tab] = await chrome.tabs.query(queryOptions);
+    return tab.id;
+}
+
+function printLanguageText(val) {
+    document.activeElement.value += val;
+}
+
+async function buttonClick(e) {
+    const languageText = document.getElementById("language-text");
+    const currentTab = await getTabId();
+    chrome.scripting
+        .executeScript({
+            target: { tabId: currentTab },
+            func: printLanguageText,
+            args: [languageText.value],
+        })
+        .then(() => console.log("injected a function"));
 }
 
 let textarea = "";
@@ -35,13 +46,11 @@ function load(result) {
 
     const statusBtn = document.getElementById("status-btn");
     const currentText = document.getElementById("current-language");
-    const languageInput = document.getElementById("language-input");
-    const languageTimer = document.getElementById("language-timer");
     const languageText = document.getElementById("language-text");
     const languageOpts = document.getElementById("language-options");
 
     statusBtn.classList.toggle("active", result.status);
-    statusBtn.textContent = result.status ? "Turn On" : "Turn Off";
+    // statusBtn.textContent = result.status ? "Turn On" : "Turn Off";
     statusBtn.addEventListener("click", buttonClick);
 
     currentText.textContent = languages[result.language].name;
@@ -51,27 +60,24 @@ function load(result) {
         clearInterval(interval);
     }
 
-    languageInput.addEventListener("keyup", (e) => {
-        clears();
+    const keys = Object.keys(languages[result.language].language).reduce(
+        (acc, key) => {
+            if (acc.includes(key[0])) return acc;
+            acc.push(key[0]);
+            return acc;
+        },
+        []
+    );
 
+    console.log(keys);
+
+    languageText.addEventListener("keyup", (e) => {
+        clears();
         entries = Object.entries(languages[result.language].language).filter(
             ([key, val]) => {
-                return key.startsWith(e.target.value);
+                return key.startsWith(working);
             }
         );
-
-        // interval = setInterval(() => {
-        //     console.log("interval fire", count);
-        //     languageTimer.style.width = `${(count / 3) * 100}%`;
-        //     count--;
-        //     if (count === 0) {
-        //         clearInterval(interval);
-        //         languageText.textContent += e.target.value;
-        //         e.target.value = "";
-        //         languageTimer.style.width = "100%";
-        //         count = 3;
-        //     }
-        // }, 1000);
 
         languageOpts.innerHTML = entries
             .map(([key, val]) => {
@@ -80,29 +86,44 @@ function load(result) {
             .join("");
     });
 
-    languageInput.addEventListener("keydown", (e) => {
-        console.log(e.key);
+    languageText.addEventListener("keydown", (e) => {
+        e.preventDefault();
+
+        if (keys.includes(e.key)) {
+            working += e.key;
+            languageText.value = complete + working;
+        }
+
         if (e.key === "Tab") {
             e.preventDefault();
             // clears();
             const match = entries.shift();
-            console.log(match);
-            languageText.textContent += match[1];
-            languageInput.value = "";
+            console.log(complete, match[1]);
+
+            complete += match[1];
+            working = "";
+            languageText.value = complete;
+            // languageText.textContent += match[1];
         }
 
         if (e.key === "Delete") {
-            console.log("delete!!!");
+            console.log("delete!!!", working);
         }
 
         if (e.key === "Backspace") {
-            console.log("Backspace!!!");
+            if (working.length > 0) {
+                working = working.slice(0, -1);
+                languageText.value = complete + working;
+            } else {
+                complete = complete.slice(0, -1);
+                languageText.value = complete;
+            }
         }
 
         if (e.key === " ") {
-            e.preventDefault();
-            languageText.textContent += " ";
-            languageInput.value = "";
+            working = "";
+            complete += " ";
+            languageText.value = complete;
         }
     });
 }

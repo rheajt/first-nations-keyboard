@@ -10,18 +10,19 @@
 
 <body>
     <div id="app">
-        <img src="" alt="first nations keyboard extension" />
+        <div>
+            <img src="" alt="first nations keyboard extension" />
+            <h2 id="current-language"></h2>
+        </div>
 
-        <h1>First Nations Keyboard Extension</h1>
-        <h2 id="current-language"></h2>
+        <div style="overflow-x: hidden">
+            <div id="language-group">
+                <div id="language-options"></div>
+                <div id="language-timer"></div>
+                <textarea id="language-text" rows="10"></textarea>
+            </div>
 
-        <button id="status-btn"></button>
-
-        <div id="language-group">
-            <div id="language-options"></div>
-            <div id="language-timer"></div>
-            <input type="text" id="language-input" />
-            <textarea id="language-text" rows="10" disabled></textarea>
+            <button id="status-btn">Insert Text</button>
         </div>
     </div>
 
