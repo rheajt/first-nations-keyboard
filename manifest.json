@@ -17,7 +17,8 @@
                 "src/content.js"
             ],
             "matches": [
-                "https://jordanrhea.com/*"
+                "http://*/*",
+                "https://*/*"
             ]
         }
     ],

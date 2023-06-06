@@ -1,15 +1,15 @@
 import languages from "../languages";
+import "./options.css";
 
 chrome.storage.sync.get(["language"], (result) => {
     load(result);
 });
 
 function load(result) {
-    console.log("loaded", result.language, languages);
     const langSelect = document.getElementById("languages");
 
     langSelect.defaultValue = result.language;
-    langSelect.innerHTML = Object.entries(languages)
+    langSelect.innerHTML += Object.entries(languages)
         .map(
             ([key, value]) => `
             <option value="${key}" ${key === result.language ? "selected" : ""
